@@ -26,6 +26,9 @@ void listCredentials(){
         for(DWORD i = 0; i <= count; i++){
             cout << credentials[i]->TargetName << "\n";
         }
+        CredFree(credentials);
+    } else {
+        cerr << "[-] Failed to enumerate credentials" << GetLastError() << "\n";
     }
 
 }
