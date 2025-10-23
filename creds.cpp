@@ -1,17 +1,36 @@
 #include <iostream>
 #include <fstream> 
+#include <windows.h>
+#include <wincred.h>
+
+#pragma comment(lib, "advapi32.lib")
 
 using namespace std;
 
-int main(){
-    ofstream outfile("creds.txt");
-    if(!outfile.is_open()){
-        cerr << "[-] Error Opening File.";
-        return 1;
-    }
-    outfile << "[+] Starting Program..\n";
-    outfile.close();
 
-    cout << "[+] Written in file successfully :)";
+// void writeToFile(const string &filename, const string &content ){
+//     ofstream outfile(filename);
+//     if(!outfile.is_open()){
+//         cerr << "[-] Error opening file..";
+//     }
+//     outfile << content;
+//     outfile.close();
+//     cout << "[+] Written to file successfully.";
+// }
+
+void listCredentials(){
+    DWORD count;
+    PCREDENTIAL* credentials;
+    if(CredEnumerate(NULL,0, &count, &credentials)){
+        cout << "[+] Found " << count << " stored credentials \n";
+        for(DWORD i = 0; i <= count; i++){
+            cout << credentials[i]->TargetName << "\n";
+        }
+    }
+
+}
+
+int main(){
+    listCredentials();
     return 0;
 }
